@@ -5,7 +5,15 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
-const ACHIEVEMENT_TYPES = [
+interface AchievementType {
+  id: string
+  label: string
+  labelEn: string
+  color: string
+  icon: string
+}
+
+const ACHIEVEMENT_TYPES: AchievementType[] = [
   { id: 'internship', label: 'تدريب', labelEn: 'Internship', color: '#0D6B6E', icon: '💼' },
   { id: 'course', label: 'دورة', labelEn: 'Course', color: '#C8991A', icon: '📚' },
   { id: 'research', label: 'بحث', labelEn: 'Research', color: '#6B5B95', icon: '🔬' },

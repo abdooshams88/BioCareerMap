@@ -79,7 +79,48 @@ const pdfStyles = StyleSheet.create({
   },
 })
 
-function CVPDF({ data }: { data: any }) {
+interface Experience {
+  title: string
+  type: string
+  organization: string
+  date: string
+  description: string
+  verificationLink: string
+}
+
+interface CVData {
+  fullName: string
+  title: string
+  email: string
+  phone: string
+  linkedin: string
+  summary: string
+  experience: Experience[]
+  education: Experience[]
+  skills: string[]
+}
+
+interface ProfileData {
+  swot_results: Record<string, unknown>
+  career_tracks: string[]
+  skill_grid: Record<string, string>
+}
+
+interface PowVaultItem {
+  title: string
+  type: string
+  organization: string | null
+  achievement_date: string | null
+  description: string | null
+  verification_code: string | null
+}
+
+interface UserRow {
+  full_name: string | null
+  email: string | null
+}
+
+function CVPDF({ data }: { data: CVData }) {
   return (
     <Document>
       <Page size="A4" style={pdfStyles.page}>
@@ -101,7 +142,7 @@ function CVPDF({ data }: { data: any }) {
         {data.experience.length > 0 && (
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.sectionTitle}>Professional Experience</Text>
-            {data.experience.map((exp: any, idx: number) => (
+            {data.experience.map((exp, idx) => (
               <View key={idx} style={pdfStyles.experienceItem}>
                 <View style={pdfStyles.experienceHeader}>
                   <Text style={pdfStyles.company}>{exp.title}</Text>
@@ -138,20 +179,19 @@ function CVPDF({ data }: { data: any }) {
 
 export default function CVBuilder() {
   const router = useRouter()
-  const [profile, setProfile] = useState<any>(null)
-  const [achievements, setAchievements] = useState<any[]>([])
+  const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState(false)
-  const [cvData, setCvData] = useState({
+  const [cvData, setCvData] = useState<CVData>({
     fullName: '',
     title: '',
     email: '',
     phone: '',
     linkedin: '',
     summary: '',
-    experience: [] as any[],
-    education: [] as any[],
-    skills: [] as string[],
+    experience: [],
+    education: [],
+    skills: [],
   })
 
   useEffect(() => {
@@ -165,9 +205,9 @@ export default function CVBuilder() {
       return
     }
 
-    const { data: userData } = await supabase.from('users').select('*').eq('id', authUser.id).single()
-    const { data: profileData } = await supabase.from('profiles').select('*').eq('user_id', authUser.id).single()
-    const { data: powData } = await supabase.from('pow_vault').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false })
+    const { data: userData } = await supabase.from('users').select('*').eq('id', authUser.id).single() as { data: UserRow | null }
+    const { data: profileData } = await supabase.from('profiles').select('*').eq('user_id', authUser.id).single() as { data: ProfileData | null }
+    const { data: powData } = await supabase.from('pow_vault').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }) as { data: PowVaultItem[] | null }
 
     if (userData) {
       setCvData(prev => ({
@@ -178,7 +218,7 @@ export default function CVBuilder() {
     }
 
     if (powData && powData.length > 0) {
-      const expData = powData.map((a: any) => ({
+      const expData = powData.map((a) => ({
         title: a.title,
         type: a.type,
         organization: a.organization || '',
@@ -198,7 +238,6 @@ export default function CVBuilder() {
     }
 
     setProfile(profileData)
-    setAchievements(powData || [])
     setLoading(false)
   }
 
