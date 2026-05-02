@@ -1,3 +1,5 @@
+'use client'
+
 import DirectionToggle from '@/components/DirectionToggle'
 import ArabicBorder from '@/components/ArabicBorder'
 
