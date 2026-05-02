@@ -73,6 +73,91 @@ export default function Home() {
         </div>
       </section>
 
+      {/* The Real Problem Section */}
+      <section className="py-20 px-4" style={{ backgroundColor: '#FAFAF7' }}>
+        <div className="container mx-auto max-w-6xl">
+          <h2
+            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }}
+            dir="rtl"
+          >
+            المشكلة الحقيقية
+          </h2>
+          <p className="text-center mb-12 text-lg" style={{ color: '#1A1A2E', opacity: 0.7 }}>
+            The harsh reality facing Egyptian biology graduates
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {/* Card 1 - Broken Chain */}
+            <div className="rounded-lg p-8 shadow-md relative overflow-hidden" style={{ backgroundColor: '#F5E6C8' }}>
+              <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: '#C8991A' }} />
+              <div className="mb-6">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 24C8 15.163 15.163 8 24 8C27.496 8 30.8 9.203 33.332 11.332" stroke="#C8991A" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M40 24C40 32.837 32.837 40 24 40C20.504 40 17.2 38.797 14.668 36.668" stroke="#C8991A" strokeWidth="2.5" strokeLinecap="round"/>
+                  <circle cx="24" cy="24" r="4" fill="#C8991A" opacity="0.3"/>
+                  <rect x="22" y="12" width="4" height="24" rx="2" fill="#C8991A" opacity="0.5"/>
+                  <path d="M20 20L28 28M28 20L20 28" stroke="#C8991A" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <p className="text-6xl font-bold mb-3" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }}>64%</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#1A1A2E' }}>
+                of Egyptian biology graduates work in fields completely unrelated to their degree.
+              </p>
+            </div>
+
+            {/* Card 2 - Scale/Balance */}
+            <div className="rounded-lg p-8 shadow-md relative overflow-hidden" style={{ backgroundColor: '#F5E6C8' }}>
+              <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: '#C8991A' }} />
+              <div className="mb-6">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 8V40" stroke="#C8991A" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M24 8L12 4M24 8L36 4" stroke="#C8991A" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M12 4L6 20L18 20L12 4Z" fill="#C8991A" opacity="0.3" stroke="#C8991A" strokeWidth="1.5"/>
+                  <path d="M36 4L30 20L42 20L36 4Z" fill="#C8991A" opacity="0.3" stroke="#C8991A" strokeWidth="1.5"/>
+                  <circle cx="12" cy="20" r="2" fill="#C8991A"/>
+                  <circle cx="36" cy="20" r="2" fill="#C8991A"/>
+                </svg>
+              </div>
+              <p className="text-6xl font-bold mb-3" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }}>87%</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#1A1A2E' }}>
+                of Egyptian labs and companies say graduates lack practical, verifiable skills.
+              </p>
+            </div>
+
+            {/* Card 3 - Compass */}
+            <div className="rounded-lg p-8 shadow-md relative overflow-hidden" style={{ backgroundColor: '#F5E6C8' }}>
+              <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: '#C8991A' }} />
+              <div className="mb-6">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="16" stroke="#C8991A" strokeWidth="2.5"/>
+                  <circle cx="24" cy="24" r="3" fill="#C8991A"/>
+                  <path d="M24 8V16M24 32V40M8 24H16M32 24H40" stroke="#C8991A" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M24 8L27 16H21L24 8Z" fill="#C8991A" opacity="0.5"/>
+                  <path d="M24 40L27 32H21L24 40Z" fill="#C8991A" opacity="0.5"/>
+                  <path d="M8 24L16 27V21L8 24Z" fill="#C8991A" opacity="0.5"/>
+                  <path d="M40 24L32 27V21L40 24Z" fill="#C8991A" opacity="0.5"/>
+                </svg>
+              </div>
+              <p className="text-6xl font-bold mb-3" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }}>50%</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#1A1A2E' }}>
+                of students choose their career path based on family pressure, not data.
+              </p>
+            </div>
+          </div>
+
+          {/* Bold Line */}
+          <p
+            className="text-center text-2xl md:text-3xl font-bold"
+            style={{ color: '#0D6B6E', fontFamily: 'var(--font-cairo)' }}
+          >
+            BioCareerMap was built to fix all three.
+          </p>
+        </div>
+      </section>
+
+      <ArabicBorder color="#0D6B6E" />
+
       {/* Learn More Section */}
       <div id="learn-more">
         <ArabicBorder color="#C8991A" />
