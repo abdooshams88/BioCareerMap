@@ -4,40 +4,41 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
-const TOTAL_STEPS = 3
-
-const SWOT_FIELDS = [
-  { key: 'strengths', labelAr: 'نقاط القوة', placeholder: 'اكتب نقاط قوتك...' },
-  { key: 'weaknesses', labelAr: 'نقاط الضعف', placeholder: 'اكتب نقاط ضعفك...' },
-  { key: 'opportunities', labelAr: 'الفرص', placeholder: 'اكتب الفرص المتاحة...' },
-  { key: 'threats', labelAr: 'التهديدات', placeholder: 'اكتب التهديدات المحتملة...' },
+const QUESTIONS = [
+  { id: 1, text: 'I finish lab reports and assignments before their deadline', category: 'strengths' },
+  { id: 2, text: 'I enjoy reading scientific papers or textbooks in my free time', category: 'strengths' },
+  { id: 3, text: 'I prefer working alone over working in groups', category: 'weaknesses' },
+  { id: 4, text: 'When I make a mistake, I analyze what went wrong before moving on', category: 'strengths' },
+  { id: 5, text: 'I feel comfortable speaking or presenting in front of people', category: 'strengths' },
+  { id: 6, text: 'I get stressed easily when facing unexpected problems', category: 'weaknesses' },
+  { id: 7, text: 'I can manage multiple tasks or deadlines at the same time', category: 'strengths' },
+  { id: 8, text: 'I actively look for internship or research opportunities on my own', category: 'opportunities' },
+  { id: 9, text: 'I feel motivated more by money and financial stability than by passion', category: 'threats' },
+  { id: 10, text: 'I believe I can learn any skill if I put in the effort', category: 'strengths' },
+  { id: 11, text: 'I follow through on long-term projects even when they get boring', category: 'strengths' },
+  { id: 12, text: 'I take initiative in group work rather than waiting to be told what to do', category: 'strengths' },
+  { id: 13, text: 'I find it hard to say no to people who ask for my help', category: 'weaknesses' },
+  { id: 14, text: 'I prefer practical, hands-on work over theoretical study', category: 'strengths' },
+  { id: 15, text: 'I keep track of my goals and review them regularly', category: 'strengths' },
+  { id: 16, text: 'I get discouraged by failure or negative feedback', category: 'weaknesses' },
+  { id: 17, text: 'I am aware of the job market and typical salaries in my field', category: 'opportunities' },
+  { id: 18, text: 'I feel financially pressured by my family situation', category: 'threats' },
+  { id: 19, text: 'I would be willing to work or study abroad if a good opportunity came up', category: 'opportunities' },
+  { id: 20, text: 'I believe hard work alone is enough to succeed in Egypt\'s biology job market', category: 'threats' },
 ]
 
-const CAREER_TRACKS = [
-  { id: 'research', titleAr: 'البحث العلمي', titleEn: 'Research', desc: 'Focus on scientific research and discovery' },
-  { id: 'clinical', titleAr: 'المختبرات السريرية', titleEn: 'Clinical', desc: 'Work in clinical labs and diagnostics' },
-  { id: 'industry', titleAr: 'الصناعة', titleEn: 'Industry', desc: 'Biotech and pharmaceutical companies' },
-]
-
-const SKILL_CATEGORIES = [
-  { category: 'labSkills', labelAr: 'مهارات المختبر', labelEn: 'Lab Skills' },
-  { category: 'softSkills', labelAr: 'المهارات الناعمة', labelEn: 'Soft Skills' },
-  { category: 'technicalSkills', labelAr: 'المهارات التقنية', labelEn: 'Technical Skills' },
-]
-
-const SKILL_LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'Expert']
+const SCALE_LABELS = ['لا أبداً', 'نادراً', 'أحياناً', 'كثيراً', 'دايماً']
 
 export default function Onboarding() {
   const router = useRouter()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [answers, setAnswers] = useState<{ [key: string]: number }>({})
+  const [saving, setSaving] = useState(false)
   const [userId, setUserId] = useState('')
 
-  const [swotData, setSwotData] = useState({ strengths: '', weaknesses: '', opportunities: '', threats: '' })
-  const [selectedTrack, setSelectedTrack] = useState('')
-  const [skillGrid, setSkillGrid] = useState({ labSkills: [], softSkills: [], technicalSkills: [] })
-
-  useEffect(() => { checkUser() }, [])
+  useEffect(() => {
+    checkUser()
+  }, [])
 
   async function checkUser() {
     const { data: { user } } = await supabase.auth.getUser()
@@ -47,182 +48,189 @@ export default function Onboarding() {
   }
 
   async function loadProgress(uid: string) {
-    const { data } = await supabase.from('profiles').select('*').eq('user_id', uid).single()
-    if (data) {
-      if (data.swot_results) setSwotData(data.swot_results)
-      if (data.career_tracks && data.career_tracks.length > 0) {
-        setSelectedTrack(data.career_tracks[0])
-        setCurrentStep(2)
-      }
-      if (data.skill_grid) {
-        setSkillGrid(data.skill_grid)
-        setCurrentStep(3)
+    const { data } = await supabase.from('profiles').select('swot_results').eq('user_id', uid).single()
+    if (data?.swot_results?.answers) {
+      setAnswers(data.swot_results.answers)
+      const lastAnswered = Object.keys(data.swot_results.answers).length
+      if (lastAnswered > 0 && lastAnswered < QUESTIONS.length) {
+        setCurrentQuestion(lastAnswered)
       }
     }
+  }
+
+  function handleAnswer(questionId: number, value: number) {
+    setAnswers(prev => ({ ...prev, [questionId]: value }))
   }
 
   async function saveProgress() {
-    setLoading(true)
+    setSaving(true)
+    const swotResult = calculateSWOT()
     try {
-      const { error } = await supabase.from('profiles').upsert({
+      await supabase.from('profiles').upsert({
         user_id: userId,
-        swot_results: swotData,
-        career_tracks: selectedTrack ? [selectedTrack] : [],
-        skill_grid: skillGrid,
-        completed_onboarding: currentStep === TOTAL_STEPS,
+        swot_results: { answers, ...swotResult },
         updated_at: new Date(),
       })
-      if (error) throw error
     } catch (err) {
-      console.error('Error saving progress:', err)
+      console.error('Error saving:', err)
     } finally {
-      setLoading(false)
+      setSaving(false)
     }
+  }
+
+  function calculateSWOT() {
+    const scores = { strengths: 0, weaknesses: 0, opportunities: 0, threats: 0 }
+    QUESTIONS.forEach(q => {
+      const answer = answers[q.id] || 0
+      if (answer > 3) { // Only count 4 and 5 (كثيراً and دايماً)
+        scores[q.category] += answer - 3
+      }
+    })
+    return scores
   }
 
   async function handleNext() {
-    await saveProgress()
-    if (currentStep < TOTAL_STEPS) {
-      setCurrentStep(currentStep + 1)
+    if (currentQuestion < QUESTIONS.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
     } else {
-      await supabase.from('profiles').update({ completed_onboarding: true }).eq('user_id', userId)
-      router.push('/dashboard')
+      await saveProgress()
+      router.push('/onboarding/career-track')
     }
   }
 
-  function handleBack() {
-    if (currentStep > 1) setCurrentStep(currentStep - 1)
+  function handlePrev() {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1)
+    }
   }
 
-  const progressWidth = (currentStep / TOTAL_STEPS) * 100
-
-  function handleSwotChange(key: string, value: string) {
-    setSwotData(prev => ({ ...prev, [key]: value }))
+  function getSlideDirection() {
+    return currentQuestion > 0 ? 'translate-x-0' : '-translate-x-full'
   }
 
-  function handleSkillClick(category: string, level: string) {
-    const prefix = level.charAt(0)
-    setSkillGrid(prev => {
-      const current = prev[category] || []
-      const exists = current.some((s: string) => s.startsWith(prefix))
-      if (exists) {
-        return { ...prev, [category]: current.filter((s: string) => !s.startsWith(prefix)) }
-      } else {
-        return { ...prev, [category]: [...current, `${prefix}:${level}`] }
-      }
-    })
-  }
+  const progress = ((currentQuestion + 1) / QUESTIONS.length) * 100
+  const currentQ = QUESTIONS[currentQuestion]
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAF7' }} dir="rtl">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#0D6B6E', fontFamily: 'var(--font-cairo)' }} dir="rtl">
+            اكتشف نفسك
+          </h1>
+          <p style={{ color: '#1A1A2E', opacity: 0.7 }}>
+            The BioCareerMap Diagnostic — 20 questions, about 8 minutes
+          </p>
+        </div>
+
+        {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium" style={{ color: '#1A1A2E' }}>Step {currentStep} of {TOTAL_STEPS}</span>
-            <span className="text-sm" style={{ color: '#1A1A2E', opacity: 0.6 }}>{Math.round(progressWidth)}%</span>
+            <span className="text-sm" style={{ color: '#1A1A2E' }}>
+              السؤال {currentQuestion + 1} من {QUESTIONS.length}
+            </span>
+            <span className="text-sm" style={{ color: '#1A1A2E', opacity: 0.6 }}>
+              {Math.round(progress)}%
+            </span>
           </div>
           <div className="w-full h-3 rounded-full" style={{ backgroundColor: '#F5E6C8' }}>
-            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressWidth}%`, backgroundColor: '#C8991A' }} />
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${progress}%`,
+                backgroundColor: '#C8991A',
+              }}
+            />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          {currentStep === 1 && (
-            <div>
-              <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">التقييم الذاتي (SWOT)</h2>
-              <p className="mb-8" style={{ color: '#1A1A2E', opacity: 0.7 }}>Step 1: Identify your strengths, weaknesses, opportunities, and threats</p>
-              <div className="space-y-6">
-                {SWOT_FIELDS.map((item) => (
-                  <div key={item.key}>
-                    <h3 className="text-xl font-bold mb-3" style={{ color: '#0D6B6E' }} dir="rtl">{item.labelAr}</h3>
-                    <textarea
-                      className="w-full p-4 rounded-lg border"
-                      rows={3}
-                      placeholder={item.placeholder}
-                      dir="rtl"
-                      style={{ borderColor: '#C8991A', backgroundColor: '#FAFAF7' }}
-                      value={swotData[item.key]}
-                      onChange={(e) => handleSwotChange(item.key, e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        {/* Question Card with Slide Animation */}
+        <div className="bg-white rounded-lg shadow-lg p-8 min-h-[300px] relative overflow-hidden">
+          <div
+            key={currentQuestion}
+            className="transition-all duration-500 ease-in-out"
+            style={{
+              transform: 'translateX(0)',
+              opacity: 1,
+            }}
+          >
+            <h2 className="text-2xl font-bold mb-8" style={{ color: '#1A1A2E' }} dir="rtl">
+              {currentQ.text}
+            </h2>
 
-          {currentStep === 2 && (
-            <div>
-              <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">اختر المسار المهني</h2>
-              <p className="mb-8" style={{ color: '#1A1A2E', opacity: 0.7 }}>Step 2: Select your primary career track</p>
-              <div className="grid md:grid-cols-3 gap-4">
-                {CAREER_TRACKS.map((track) => (
-                  <div
-                    key={track.id}
-                    onClick={() => setSelectedTrack(track.id)}
-                    className="p-6 rounded-lg border-2 cursor-pointer transition-all hover:scale-105"
+            <div className="space-y-3">
+              {SCALE_LABELS.map((label, index) => {
+                const value = index + 1
+                const isSelected = answers[currentQ.id] === value
+                return (
+                  <button
+                    key={value}
+                    onClick={() => handleAnswer(currentQ.id, value)}
+                    className={`w-full p-4 rounded-lg border-2 transition-all hover:scale-102 ${
+                      isSelected ? 'transform scale-105' : ''
+                    }`}
                     style={{
-                      borderColor: selectedTrack === track.id ? '#C8991A' : '#F5E6C8',
-                      backgroundColor: selectedTrack === track.id ? '#F5E6C8' : '#FFFFFF',
+                      borderColor: isSelected ? '#C8991A' : '#E5E7EB',
+                      backgroundColor: isSelected ? '#F5E6C8' : '#FFFFFF',
+                      color: '#1A1A2E',
                     }}
                   >
-                    <h3 className="text-xl font-bold mb-2" style={{ color: '#1A1A2E' }} dir="rtl">{track.titleAr}</h3>
-                    <p className="text-sm" style={{ color: '#1A1A2E', opacity: 0.7 }}>{track.titleEn}</p>
-                    <p className="text-sm mt-2" style={{ color: '#1A1A2E', opacity: 0.6 }}>{track.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {currentStep === 3 && (
-            <div>
-              <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">تقييم المهارات</h2>
-              <p className="mb-8" style={{ color: '#1A1A2E', opacity: 0.7 }}>Step 3: Select your current skill levels</p>
-              <div className="space-y-4">
-                {SKILL_CATEGORIES.map((item) => (
-                  <div key={item.category} className="p-4 rounded-lg" style={{ backgroundColor: '#F5E6C8' }}>
-                    <h3 className="font-bold mb-3" style={{ color: '#1A1A2E' }} dir="rtl">{item.labelAr}</h3>
-                    <div className="flex gap-3 flex-wrap">
-                      {SKILL_LEVELS.map((level) => (
-                        <button
-                          key={level}
-                          onClick={() => handleSkillClick(item.category, level)}
-                          className="px-4 py-2 rounded-md text-sm transition-all"
-                          style={{
-                            backgroundColor: skillGrid[item.category]?.some((s: string) => s.includes(level)) ? '#C8991A' : '#FFFFFF',
-                            color: skillGrid[item.category]?.some((s: string) => s.includes(level)) ? '#1A1A2E' : '#1A1A2E',
-                            border: '1px solid #C8991A',
-                          }}
-                        >
-                          {level}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg">{label}</span>
+                      {isSelected && (
+                        <span className="text-2xl">✓</span>
+                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
+                  </button>
+                )
+              })}
             </div>
-          )}
+          </div>
         </div>
 
+        {/* Navigation */}
         <div className="flex justify-between mt-8">
           <button
-            onClick={handleBack}
-            disabled={currentStep === 1}
+            onClick={handlePrev}
+            disabled={currentQuestion === 0}
             className="px-8 py-3 rounded-lg font-bold transition-all disabled:opacity-50"
             style={{ border: '2px solid #C8991A', color: '#C8991A' }}
           >
             السابق
           </button>
-          <button
-            onClick={handleNext}
-            disabled={loading || (currentStep === 2 && !selectedTrack)}
-            className="px-8 py-3 rounded-lg font-bold text-lg transition-all hover:opacity-90 disabled:opacity-50"
-            style={{ backgroundColor: '#C8991A', color: '#1A1A2E' }}
-          >
-            {loading ? 'جاري الحفظ...' : currentStep === TOTAL_STEPS ? 'إنهاء' : 'التالي'}
-          </button>
+
+          {currentQuestion < QUESTIONS.length - 1 ? (
+            <button
+              onClick={() => {
+                if (answers[currentQ.id]) {
+                  handleNext()
+                }
+              }}
+              disabled={!answers[currentQ.id]}
+              className="px-8 py-3 rounded-lg font-bold text-lg transition-all hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: '#C8991A', color: '#1A1A2E' }}
+            >
+              التالي
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              disabled={!answers[currentQ.id] || saving}
+              className="px-8 py-3 rounded-lg font-bold text-lg transition-all hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: '#C8991A', color: '#1A1A2E' }}
+            >
+              {saving ? 'جاري الحفظ...' : 'إنهاء واحفظ'}
+            </button>
+          )}
         </div>
+
+        {/* Skip Warning */}
+        {!answers[currentQ.id] && (
+          <p className="text-center mt-4 text-sm" style={{ color: '#1A1A2E', opacity: 0.5 }}>
+            يجب اختيار إجابة للمتابعة
+          </p>
+        )}
       </div>
     </div>
   )
