@@ -59,6 +59,29 @@ body {
   background-size: 60px 60px;
 }
 
+/* Animated Arabesque Pattern */
+.arabesque-animation {
+  animation: arabesque-drift 120s linear infinite;
+}
+
+@keyframes arabesque-drift {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.02);
+  }
+  50% {
+    transform: rotate(180deg) scale(1);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.02);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
