@@ -174,14 +174,11 @@ export default function Home() {
 
           {/* Timeline */}
           <div className="relative">
-            {/* Flowing curved line - mobile: vertical center, desktop: zigzag */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5" style={{ backgroundColor: '#C8991A', opacity: 0.3 }} />
-            <svg className="hidden md:block absolute left-1/2 transform -translate-x-1/2" style={{ top: '0', height: '100%' }} width="2" height="100%" viewBox="0 0 2 1200" preserveAspectRatio="none">
-              <path d="M1 0 Q50 100, 1 200 Q-48 300, 1 400 Q50 500, 1 600 Q-48 700, 1 800 Q50 900, 1 1000 Q-48 1100, 1 1200" stroke="#C8991A" strokeWidth="2" fill="none" strokeDasharray="8 4"/>
-            </svg>
+            {/* Centered vertical line - desktop only */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-0.5" style={{ backgroundColor: '#C8991A', opacity: 0.3 }} />
 
             {/* Steps */}
-            <div className="space-y-12 relative">
+            <div className="space-y-12 md:space-y-16">
               {[
                 {
                   number: '١',
@@ -258,22 +255,48 @@ export default function Home() {
                   ),
                 },
               ].map((step, i) => (
-                <div key={i} className={`flex items-center gap-8 ${i % 2 === 1 ? 'flex-row-reverse' : ''} flex-col md:flex-row`}>
-                  {/* Step Card */}
-                  <div className={`flex-1 ${i % 2 === 1 ? 'md:text-right' : 'md:text-left'} text-center`}>
-                    <div className="inline-block p-6 rounded-lg shadow-md" style={{ backgroundColor: '#FFFFFF' }}>
-                      <div className="mb-4 flex justify-center" style={{ color: '#C8991A' }}>{step.icon}</div>
+                <div key={i} className="relative">
+                  {/* Desktop layout with zigzag */}
+                  <div className="hidden md:flex items-center">
+                    {/* Left side - Step 1, 3, 5 */}
+                    <div className={`w-5/12 ${i % 2 === 0 ? 'block' : 'invisible'}`}>
+                      {i % 2 === 0 && (
+                        <div className="p-6 rounded-lg shadow-md text-center" style={{ backgroundColor: '#FFFFFF' }}>
+                          <div className="mb-4 flex justify-center">{step.icon}</div>
+                          <div className="text-5xl font-bold mb-3" style={{ color: '#C8991A', fontFamily: 'var(--font-cairo)' }}>{step.number}</div>
+                          <h3 className="text-2xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">{step.title}</h3>
+                          <p className="text-base" style={{ color: '#1A1A2E', opacity: 0.8 }}>{step.titleEn}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Center dot */}
+                    <div className="w-2/12 flex justify-center">
+                      <div className="w-4 h-4 rounded-full z-10" style={{ backgroundColor: '#C8991A' }} />
+                    </div>
+
+                    {/* Right side - Step 2, 4, 6 */}
+                    <div className={`w-5/12 ${i % 2 === 1 ? 'block' : 'invisible'}`}>
+                      {i % 2 === 1 && (
+                        <div className="p-6 rounded-lg shadow-md text-center" style={{ backgroundColor: '#FFFFFF' }}>
+                          <div className="mb-4 flex justify-center">{step.icon}</div>
+                          <div className="text-5xl font-bold mb-3" style={{ color: '#C8991A', fontFamily: 'var(--font-cairo)' }}>{step.number}</div>
+                          <h3 className="text-2xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">{step.title}</h3>
+                          <p className="text-base" style={{ color: '#1A1A2E', opacity: 0.8 }}>{step.titleEn}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Mobile layout - full width */}
+                  <div className="md:hidden">
+                    <div className="p-6 rounded-lg shadow-md text-center" style={{ backgroundColor: '#FFFFFF' }}>
+                      <div className="mb-4 flex justify-center">{step.icon}</div>
                       <div className="text-5xl font-bold mb-3" style={{ color: '#C8991A', fontFamily: 'var(--font-cairo)' }}>{step.number}</div>
                       <h3 className="text-2xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">{step.title}</h3>
                       <p className="text-base" style={{ color: '#1A1A2E', opacity: 0.8 }}>{step.titleEn}</p>
                     </div>
                   </div>
-
-                  {/* Timeline Dot */}
-                  <div className="hidden md:flex w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: '#C8991A' }} />
-
-                  {/* Spacer for alignment */}
-                  <div className="hidden md:block flex-1" />
                 </div>
               ))}
             </div>
