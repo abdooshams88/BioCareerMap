@@ -3,13 +3,14 @@ import { Cairo } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { bixie } from "@/lib/fonts";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
   variable: "--font-cairo",
   display: "swap",
 });
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} ${geistSans.variable} ${geistMono.variable} ${bixie.variable} antialiased`}
       >
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
