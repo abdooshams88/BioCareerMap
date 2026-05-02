@@ -361,9 +361,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+ </div>
   )
 }
