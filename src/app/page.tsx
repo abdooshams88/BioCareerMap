@@ -1,100 +1,130 @@
-import Image from "next/image";
+import DirectionToggle from '@/components/DirectionToggle'
+import ArabicBorder from '@/components/ArabicBorder'
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-papyrus islamic-pattern">
+      <DirectionToggle />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      <main className="container mx-auto px-4 py-16">
+        {/* Hero Section */}
+        <section className="text-center mb-16">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6" style={{ color: '#0D6B6E', fontFamily: 'var(--font-bixie)' }}>
+            BioCareerMap
+          </h1>
+          <p className="text-xl md:text-2xl mb-8" style={{ color: '#1A1A2E' }}>
+            Navigate Your Biotechnology Career Path
+          </p>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#1A1A2E', opacity: 0.8 }}>
+            Discover opportunities, explore career trajectories, and unlock your potential in the life sciences industry.
+          </p>
+        </section>
+
+        <ArabicBorder />
+
+        {/* Color Palette Showcase */}
+        <section className="my-16">
+          <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: '#0D6B6E' }}>
+            Design System Colors
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {[
+              { name: 'Primary', color: '#0D6B6E', label: 'Deep Nile Teal' },
+              { name: 'Secondary', color: '#C8991A', label: 'Pharaonic Gold' },
+              { name: 'Accent', color: '#F5E6C8', label: 'Desert Sand' },
+              { name: 'Dark', color: '#1A1A2E', label: 'Deep Kohl' },
+              { name: 'Success', color: '#4A7C59', label: 'Papyrus Green' },
+              { name: 'Background', color: '#FAFAF7', label: 'Off-White Papyrus' },
+            ].map((item) => (
+              <div key={item.name} className="rounded-lg shadow-md overflow-hidden">
+                <div
+                  className="h-32 flex items-end p-4"
+                  style={{ backgroundColor: item.color }}
+                >
+                  <span className="text-sm font-semibold" style={{ color: item.color === '#F5E6C8' || item.color === '#FAFAF7' ? '#1A1A2E' : '#FAFAF7' }}>
+                    {item.label}
+                  </span>
+                </div>
+                <div className="p-4" style={{ backgroundColor: '#FAFAF7' }}>
+                  <p className="font-bold" style={{ color: '#1A1A2E' }}>{item.name}</p>
+                  <p className="text-sm" style={{ color: '#1A1A2E', opacity: 0.6 }}>{item.color}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <ArabicBorder color="#0D6B6E" />
+
+        {/* Typography Section */}
+        <section className="my-16">
+          <h2 className="text-3xl font-bold mb-8" style={{ color: '#0D6B6E' }}>
+            Typography
+          </h2>
+          <div className="space-y-6" style={{ backgroundColor: '#FAFAF7' }} className="p-8 rounded-lg">
+            <div>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#C8991A' }}>BIXIE Font (Arabic-Inspired)</h3>
+              <p className="text-4xl" style={{ fontFamily: 'var(--font-bixie)', color: '#1A1A2E' }}>
+                BioCareerMap - بيوكير ماب
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#C8991A' }}>Cairo Font (Google Fonts)</h3>
+              <p className="text-4xl" style={{ fontFamily: 'var(--font-cairo)', color: '#1A1A2E' }}>
+                BioCareerMap - بيوكير ماب
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#C8991A' }}>Body Text</h3>
+              <p style={{ fontFamily: 'var(--font-cairo)', color: '#1A1A2E' }}>
+                The biotechnology industry offers diverse career opportunities across research, development, manufacturing, and commercial roles. Explore your path today.
+              </p>
+              <p className="mt-2" style={{ fontFamily: 'var(--font-cairo)', color: '#1A1A2E' }} dir="rtl">
+                تقدم صناعة التكنولوجيا الحيوية فرصًا مهنية متنوعة في مجالات البحث والتطوير والتصنيع والأدوار التجارية. استكشف مسارك اليوم.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <ArabicBorder />
+
+        {/* Islamic Pattern Demo */}
+        <section className="my-16 p-12 rounded-lg islamic-star-pattern" style={{ backgroundColor: '#0D6B6E' }}>
+          <h2 className="text-3xl font-bold mb-4 text-center" style={{ color: '#F5E6C8' }}>
+            Islamic Geometric Pattern
+          </h2>
+          <p className="text-center" style={{ color: '#FAFAF7' }}>
+            Subtle arabesque patterns inspired by Islamic architecture
+          </p>
+        </section>
+
+        {/* Sample Cards */}
+        <section className="my-16">
+          <h2 className="text-3xl font-bold mb-8" style={{ color: '#0D6B6E' }}>
+            Sample Components
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-lg shadow-md" style={{ backgroundColor: '#FAFAF7', borderLeft: '4px solid #0D6B6E' }}>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1A1A2E' }}>Research Scientist</h3>
+              <p style={{ color: '#1A1A2E', opacity: 0.8 }}>Conduct experiments and analyze data to advance biotech innovations.</p>
+            </div>
+            <div className="p-6 rounded-lg shadow-md" style={{ backgroundColor: '#FAFAF7', borderLeft: '4px solid #C8991A' }}>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1A1A2E' }}>Lab Manager</h3>
+              <p style={{ color: '#1A1A2E', opacity: 0.8 }}>Oversee laboratory operations and ensure compliance with regulations.</p>
+            </div>
+            <div className="p-6 rounded-lg shadow-md" style={{ backgroundColor: '#FAFAF7', borderLeft: '4px solid #4A7C59' }}>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1A1A2E' }}>Bioinformatics Analyst</h3>
+              <p style={{ color: '#1A1A2E', opacity: 0.8 }}>Use computational tools to analyze biological data and genomic sequences.</p>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="py-8" style={{ backgroundColor: '#1A1A2E' }}>
+        <div className="container mx-auto px-4 text-center">
+          <p style={{ color: '#F5E6C8' }}>© 2026 BioCareerMap. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   );

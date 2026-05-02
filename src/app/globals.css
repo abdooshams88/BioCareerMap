@@ -3,25 +3,81 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --color-primary: #0D6B6E;
+  --color-secondary: #C8991A;
+  --color-accent: #F5E6C8;
+  --color-dark: #1A1A2E;
+  --color-success: #4A7C59;
+  --color-background: #FAFAF7;
+  --color-foreground: #1A1A2E;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-bixie: 'BIXIE', 'Cairo', sans-serif;
+  --font-cairo: 'Cairo', sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-family: var(--font-cairo);
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* Islamic Geometric Pattern Background */
+.islamic-pattern {
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(13, 107, 110, 0.03) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(200, 153, 26, 0.03) 2px, transparent 2px),
+    linear-gradient(30deg, transparent 48%, rgba(13, 107, 110, 0.02) 49%, rgba(13, 107, 110, 0.02) 51%, transparent 52%),
+    linear-gradient(-30deg, transparent 48%, rgba(200, 153, 26, 0.02) 49%, rgba(200, 153, 26, 0.02) 51%, transparent 52%);
+  background-size: 60px 60px, 60px 60px, 30px 30px, 30px 30px;
+}
+
+.islamic-pattern-dark {
+  background-color: var(--color-dark);
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(13, 107, 110, 0.05) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(200, 153, 26, 0.05) 2px, transparent 2px),
+    linear-gradient(30deg, transparent 48%, rgba(13, 107, 110, 0.03) 49%, rgba(13, 107, 110, 0.03) 51%, transparent 52%),
+    linear-gradient(-30deg, transparent 48%, rgba(200, 153, 26, 0.03) 49%, rgba(200, 153, 26, 0.03) 51%, transparent 52%);
+  background-size: 60px 60px, 60px 60px, 30px 30px, 30px 30px;
+}
+
+/* Star Pattern Variant */
+.islamic-star-pattern {
+  background-color: var(--color-background);
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5L35 25H55L38 36L43 55L30 42L17 55L22 36L5 25H25L30 5Z' fill='none' stroke='rgba(13,107,110,0.04)' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Color utilities */
+  .text-primary { color: var(--color-primary); }
+  .text-secondary { color: var(--color-secondary); }
+  .text-accent { color: var(--color-accent); }
+  .text-dark { color: var(--color-dark); }
+  .text-success { color: var(--color-success); }
+
+  .bg-primary { background-color: var(--color-primary); }
+  .bg-secondary { background-color: var(--color-secondary); }
+  .bg-accent { background-color: var(--color-accent); }
+  .bg-dark { background-color: var(--color-dark); }
+  .bg-success { background-color: var(--color-success); }
+  .bg-papyrus { background-color: var(--color-background); }
+
+  .border-primary { border-color: var(--color-primary); }
+  .border-secondary { border-color: var(--color-secondary); }
 }
