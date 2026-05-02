@@ -1,12 +1,12 @@
 'use client'
 
-import DirectionToggle from '@/components/DirectionToggle'
+import Navbar from '@/components/Navbar'
 import ArabicBorder from '@/components/ArabicBorder'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-papyrus">
-      <DirectionToggle />
+      <Navbar />
 
       {/* Made in Egypt Badge */}
       <div className="fixed top-4 left-4 z-50">
