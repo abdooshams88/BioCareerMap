@@ -94,13 +94,13 @@ const CAREER_TRACKS = [
   { id: 'foodsafety', titleAr: 'سلامة الغذاء', titleEn: 'Food Safety & HACCP', salary: '7,000 - 13,000 EGP', certs: 'HACCP, ISO 22000', demand: 'High' },
   { id: 'publichealth', titleAr: 'الصحة العامة', titleEn: 'Public Health', salary: '10,000 - 20,000 EGP', certs: 'MPH', demand: 'Medium' },
   { id: 'environment', titleAr: 'البيئة و الحياة البرية', titleEn: 'Environmental Biology', salary: '8,000 - 15,000 EGP', certs: 'Environmental Certs', demand: 'Low' },
-  { id: 'genetic', titleAr: 'اإساء الجينات', titleEn: 'Genetic Counseling', salary: '12,000 - 25,000 EGP', certs: 'Genetic Counseling Cert', demand: 'Medium' },
+  { id: 'genetic', titleAr: 'إرشاد الجينات', titleEn: 'Genetic Counseling', salary: '12,000 - 25,000 EGP', certs: 'Genetic Counseling Cert', demand: 'Medium' },
   { id: 'veterinary', titleAr: 'صحة الحيوان', titleEn: 'Animal Health', salary: '8,000 - 16,000 EGP', certs: 'Veterinary Support Cert', demand: 'Low' },
 ]
 
 export default function Onboarding() {
   const router = useRouter()
-  const chartRef = useRef<ChartJS>(null)
+  const chartRef = useRef<any>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -108,7 +108,6 @@ export default function Onboarding() {
 
   // Step 1: SWOT
   const [swotAnswers, setSwotAnswers] = useState<{ [key: number]: number }>({})
-  const [swotResult, setSwotResult] = useState({})
 
   // Step 2: Skill Grid
   const [skillLevels, setSkillLevels] = useState<{ [key: string]: string }>({})
@@ -130,7 +129,6 @@ export default function Onboarding() {
     if (data) {
       if (data.swot_results?.answers) {
         setSwotAnswers(data.swot_results.answers)
-        setSwotResult(data.swot_results)
         setCurrentStep(2)
       }
       if (data.skill_grid && Object.keys(data.skill_grid).length > 0) {
@@ -147,7 +145,7 @@ export default function Onboarding() {
     }
   }
 
-  const calculateSWOT = () => {
+  function calculateSWOT() {
     const scores: any = { strengths: 0, weaknesses: 0, opportunities: 0, threats: 0 }
     SWOT_QUESTIONS.forEach(q => {
       const answer = swotAnswers[q.id] || 0
@@ -273,7 +271,9 @@ export default function Onboarding() {
         angleLines: { color: 'rgba(26, 26, 46, 0.1)' },
       },
     },
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+    },
   }
 
   return (
@@ -286,7 +286,13 @@ export default function Onboarding() {
             <span className="text-sm" style={{ color: '#1A1A2E', opacity: 0.6 }}>{Math.round(progress)}%</span>
           </div>
           <div className="w-full h-3 rounded-full" style={{ backgroundColor: '#F5E6C8' }}>
-            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, backgroundColor: '#C8991A' }} />
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${progress}%`,
+                backgroundColor: '#C8991A',
+              }}
+            />
           </div>
         </div>
 
@@ -297,7 +303,7 @@ export default function Onboarding() {
             <p className="mb-8" style={{ color: '#1A1A2E', opacity: 0.7 }}>The BioCareerMap Diagnostic — 20 questions, about 8 minutes</p>
 
             <div className="space-y-8">
-              {SWOT_QUESTIONS.map((q, index) => (
+              {SWOT_QUESTIONS.map((q) => (
                 <div key={q.id}>
                   <h3 className="text-lg font-bold mb-4" style={{ color: '#0D6B6E' }} dir="rtl">
                     {q.id}. {q.text}
@@ -326,11 +332,12 @@ export default function Onboarding() {
             <div className="mt-8 flex justify-between">
               <button
                 disabled
-                className="px-8 py-3 rounded-lg font-bold transition-all disabled:opacity-50"
+                className="px-8 py-3 rounded-lg font-bold transition-all"
                 style={{ border: '2px solid #C8991A', color: '#C8991A' }}
               >
                 السابق
               </button>
+
               <button
                 onClick={handleNext}
                 disabled={Object.keys(swotAnswers).length < 20}
@@ -346,10 +353,11 @@ export default function Onboarding() {
         {/* Step 2: Skill Grid */}
         {currentStep === 2 && (
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">أين أنت دلوقتي؟</h2>
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">أين أنت دلوقتك؟</h2>
             <p className="mb-8" style={{ color: '#1A1A2E', opacity: 0.7 }}>Where Are You Right Now? Rate your skills below.</p>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
+              {/* Hard Skills */}
               <div>
                 <h3 className="text-xl font-bold mb-4" style={{ color: '#0D6B6E' }} dir="rtl">المهارات الصلبة</h3>
                 <div className="space-y-4">
@@ -377,6 +385,7 @@ export default function Onboarding() {
                 </div>
               </div>
 
+              {/* Soft Skills */}
               <div>
                 <h3 className="text-xl font-bold mb-4" style={{ color: '#0D6B6E' }} dir="rtl">المهارات الناعمة</h3>
                 <div className="space-y-4">
@@ -421,6 +430,7 @@ export default function Onboarding() {
               >
                 السابق
               </button>
+
               <button
                 onClick={handleNext}
                 disabled={Object.keys(skillLevels).length < HARD_SKILLS.length + SOFT_SKILLS.length}
@@ -438,7 +448,7 @@ export default function Onboarding() {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-3xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">اختر مساراتك</h2>
             <p className="mb-4" style={{ color: '#1A1A2E', opacity: 0.7 }}>BioCareerMap requires you to have 3 career tracks — not one. This protects you from market shifts and currency crises.</p>
-            <p className="mb-8 text-sm" style={{ color: '#1A1A2E', opacity: 0.8 }}" dir="rtl">
+            <p className="mb-8 text-sm" style={{ color: '#1A1A2E', opacity: 0.8 }} dir="rtl">
               مسارك الأساسي هو حلمك. مسارك الثانوي هو احتياطك. مسارك الثالث يبقيك مالياً مهما حدث.
             </p>
 
@@ -501,6 +511,7 @@ export default function Onboarding() {
               >
                 السابق
               </button>
+
               <button
                 onClick={handleNext}
                 disabled={Object.keys(selectedTracks).length < 3}
