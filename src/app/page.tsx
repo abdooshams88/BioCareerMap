@@ -8,16 +8,6 @@ export default function Home() {
     <div className="min-h-screen bg-papyrus">
       <Navbar />
 
-      {/* Made in Egypt Badge */}
-      <div className="fixed top-4 left-4 z-50">
-        <div
-          className="px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
-          style={{ backgroundColor: '#C8991A', color: '#1A1A2E' }}
-        >
-          Made in Egypt 🇪🇬
-        </div>
-      </div>
-
       {/* Hero Section */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#1A1A2E' }}>
         {/* Animated Arabesque Pattern Overlay */}
