@@ -6,7 +6,7 @@ import ArabicBorder from '@/components/ArabicBorder'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-papyrus">
+    <div className="min-h-screen" style={{ backgroundColor: '#FAFAF7' }}>
       <Navbar />
 
       {/* Hero Section */}
