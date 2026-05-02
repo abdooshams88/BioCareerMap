@@ -1,6 +1,7 @@
 'use client'
 
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import ArabicBorder from '@/components/ArabicBorder'
 
 export default function Home() {
@@ -362,11 +363,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8" style={{ backgroundColor: '#1A1A2E' }}>
-        <div className="container mx-auto px-4 text-center">
-          <p style={{ color: '#F5E6C8' }}>© 2026 BioCareerMap. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
-  );
+  )
 }
