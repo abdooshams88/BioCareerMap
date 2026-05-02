@@ -158,6 +158,131 @@ export default function Home() {
 
       <ArabicBorder color="#0D6B6E" />
 
+      {/* How It Works Section */}
+      <section className="py-20 px-4" style={{ backgroundColor: '#FAFAF7' }}>
+        <div className="container mx-auto max-w-6xl">
+          <h2
+            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }}
+            dir="rtl"
+          >
+            كيف يشتغل
+          </h2>
+          <p className="text-center mb-16 text-lg" style={{ color: '#1A1A2E', opacity: 0.7 }}>
+            Your journey from student to professional in 6 steps
+          </p>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Flowing curved line - mobile: vertical center, desktop: zigzag */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5" style={{ backgroundColor: '#C8991A', opacity: 0.3 }} />
+            <svg className="hidden md:block absolute left-1/2 transform -translate-x-1/2" style={{ top: '0', height: '100%' }} width="2" height="100%" viewBox="0 0 2 1200" preserveAspectRatio="none">
+              <path d="M1 0 Q50 100, 1 200 Q-48 300, 1 400 Q50 500, 1 600 Q-48 700, 1 800 Q50 900, 1 1000 Q-48 1100, 1 1200" stroke="#C8991A" strokeWidth="2" fill="none" strokeDasharray="8 4"/>
+            </svg>
+
+            {/* Steps */}
+            <div className="space-y-12 relative">
+              {[
+                {
+                  number: '١',
+                  title: 'اعرف نفسك',
+                  titleEn: 'Take the 50-question SWOT diagnostic',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="24" cy="24" r="20" stroke="#C8991A" strokeWidth="2" fill="none"/>
+                      <circle cx="24" cy="24" r="8" fill="#C8991A" opacity="0.3"/>
+                      <path d="M24 16V24L30 28" stroke="#C8991A" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  ),
+                },
+                {
+                  number: '٢',
+                  title: 'خريطة طريقك',
+                  titleEn: 'Get your personalized 3-track career roadmap',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 40L24 8L40 40" stroke="#C8991A" strokeWidth="2" fill="none"/>
+                      <path d="M14 32L24 16L34 32" stroke="#C8991A" strokeWidth="1.5" fill="none" opacity="0.5"/>
+                      <circle cx="24" cy="24" r="3" fill="#C8991A"/>
+                    </svg>
+                  ),
+                },
+                {
+                  number: '٣',
+                  title: 'نفّذ',
+                  titleEn: 'Complete semester-based missions and vacationpulses',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 36L24 12L36 36" stroke="#C8991A" strokeWidth="2" fill="none"/>
+                      <circle cx="24" cy="30" r="4" fill="#C8991A" opacity="0.3"/>
+                      <path d="M20 24L24 20L28 24" stroke="#C8991A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ),
+                },
+                {
+                  number: '٤',
+                  title: 'وثّق',
+                  titleEn: 'Upload proof of every achievement to your PoW Vault',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="10" y="8" width="28" height="32" rx="2" stroke="#C8991A" strokeWidth="2" fill="none"/>
+                      <line x1="16" y1="16" x2="32" y2="16" stroke="#C8991A" strokeWidth="1.5"/>
+                      <line x1="16" y1="22" x2="32" y2="22" stroke="#C8991A" strokeWidth="1.5"/>
+                      <line x1="16" y1="28" x2="26" y2="28" stroke="#C8991A" strokeWidth="1.5"/>
+                      <path d="M30 34L34 38L42 30" stroke="#C8991A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ),
+                },
+                {
+                  number: '٥',
+                  title: 'تحقق',
+                  titleEn: 'Get employer-verified badges on your profile',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M24 4L28 18H42L30 26L34 40L24 32L14 40L18 26L6 18H20L24 4Z" fill="#C8991A" opacity="0.3" stroke="#C8991A" strokeWidth="1.5"/>
+                    </svg>
+                  ),
+                },
+                {
+                  number: '٦',
+                  title: 'احصل على شغلك',
+                  titleEn: 'Generate your ATS-ready CV with one click',
+                  icon: (
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="8" y="6" width="32" height="36" rx="2" stroke="#C8991A" strokeWidth="2" fill="none"/>
+                      <line x1="14" y1="14" x2="34" y2="14" stroke="#C8991A" strokeWidth="2"/>
+                      <line x1="14" y1="20" x2="34" y2="20" stroke="#C8991A" strokeWidth="1.5"/>
+                      <line x1="14" y1="26" x2="28" y2="26" stroke="#C8991A" strokeWidth="1.5"/>
+                      <path d="M30 38L34 38" stroke="#C8991A" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  ),
+                },
+              ].map((step, i) => (
+                <div key={i} className={`flex items-center gap-8 ${i % 2 === 1 ? 'flex-row-reverse' : ''} flex-col md:flex-row`}>
+                  {/* Step Card */}
+                  <div className={`flex-1 ${i % 2 === 1 ? 'md:text-right' : 'md:text-left'} text-center`}>
+                    <div className="inline-block p-6 rounded-lg shadow-md" style={{ backgroundColor: '#FFFFFF' }}>
+                      <div className="mb-4 flex justify-center" style={{ color: '#C8991A' }}>{step.icon}</div>
+                      <div className="text-5xl font-bold mb-3" style={{ color: '#C8991A', fontFamily: 'var(--font-cairo)' }}>{step.number}</div>
+                      <h3 className="text-2xl font-bold mb-2" style={{ color: '#1A1A2E', fontFamily: 'var(--font-cairo)' }} dir="rtl">{step.title}</h3>
+                      <p className="text-base" style={{ color: '#1A1A2E', opacity: 0.8 }}>{step.titleEn}</p>
+                    </div>
+                  </div>
+
+                  {/* Timeline Dot */}
+                  <div className="hidden md:flex w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: '#C8991A' }} />
+
+                  {/* Spacer for alignment */}
+                  <div className="hidden md:block flex-1" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ArabicBorder color="#C8991A" />
+
       {/* Learn More Section */}
       <div id="learn-more">
         <ArabicBorder color="#C8991A" />
